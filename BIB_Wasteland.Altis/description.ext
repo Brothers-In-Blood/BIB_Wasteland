@@ -1,0 +1,329 @@
+Author = "BIB Monkey";
+//allow AI kill scoring
+aiKills = 1;
+//exatly what it sounds like
+allowFunctionsLog = 1;
+//write protects files while mission is running
+allowFunctionsRecompile = 0;
+//disable briefing
+briefing = 0;
+// number of corpses before corpse cleanup begins
+corpseLimit = 15;
+/*Set mode for corpse cleanup manager
+0 = None - None of the units are managed by the manager 1 = All - All units are managed by the manager
+2 = None_But_Respawned - Only units that can respawn are managed by the manager
+3 = All_But_Respawned - All units are managed by the manager with exception of respawned (opposite to mode 2)*/
+corpseManagerMode = 1;
+//maximum time in seconds before a corpse is cleaned up
+corpseRemovalMaxTime = 10800;
+//manimum time in seconds before a corpse is cleaned up
+corpseRemovalMinTime = 6000;
+//disable debriefing
+debriefing = 0;
+//disable text or voice chat per channel
+disableChannels[]={{0,false,true},{1,false,true}}; // {channel, disable_chat, disable_voice} 0 = Global 1 = Side 2 = Command 3 = Group 4 = Vehicle 5 = Direct 6 = System
+//disable un-occupied AI for player spawning
+disabledAI = 1;
+/*Enable debug command console
+0 = Default behavior, available only in editor
+1 = Available in SP and for hosts / logged in admins
+2 = Available for everyone */
+enableDebugConsole = 1;
+//item dropping when underwater
+enableItemsDropping = 1;
+//enable team switching
+enableTeamSwitch = 1;
+//force rotorlimb simulation
+forceRotorLibSimulation = 0;
+/*determines default player slot assignment
+0 = assigned to side with least players
+1 = not assigned*/
+joinUnassigned = 0;
+//image displayed during loading
+loadScreen =  "images\intro.paa";
+loadingTexts[]=
+{
+			"Visit bibgamng.com for information, forums, and bug reporting",
+};
+//Minimum distance from player before a corpse or wreck can be cleaned
+minPlayerDistance = 50; //meters
+//message displayed on intro
+onLoadIntro = "Load Intro Goes Here";
+//enable time and date display during intro
+onLoadIntroTime = 1;
+//Mission Title
+OnLoadName = "BIB Wasteland";
+//Mission loading text
+onLoadMission = "LoadMission Goes here";
+//enable time and date display during mission loading
+onLoadMissionTime = 1;
+//Script run when player press ESC
+onPauseScript[] = {/*myOnPauseFunction1,myOnPauseFunction2*/};
+//determines respawn method DO NOT CHANGE
+respawn = "base";
+//enable respawn button in pause menu
+respawnButton = 1;
+//time in seconds after death before respawn
+respawnDelay = 5;
+//Shows defualt scoreboard on death LEAVE DISABLED
+respawnDialog = 0;
+//define respawn templates
+respawnTemplates = {revive};
+//time to bleed out when downed
+reviveBleedOutDelay = 120;
+//base time to revive in seconds
+reviveDelay = 30;
+//delay before a downed player may manually respawn
+reviveForceRespawnDelay = 3;
+//revive speed multiplier for medic
+ReviveMedicSpeedMultiplier = 3;
+/*set revive system mode
+0 = Disabled
+1 = Enabled for everyone
+2 = Medic Only */
+ReviveMode = 1;
+/* Defines items required to revive
+0 = none
+1 = medkit
+2 = medkit or first aid kit */
+ReviveRequiredItems = 2;
+/*set unconcious mode
+0 = basic
+1 = advanced
+2 = realistic*/
+ReviveUnconsciousStateMode = 0;
+//enables group member location on GPS
+showGroupIndicator = 1;
+//enable squad radar
+showSquadRadar = 1;
+//enable UAV feed
+showUAVFeed = 1;
+//number of wrecks before wreck cleanup begins
+wreckLimit = 5;
+/*Sets the mode for wreck removal manager
+0 = None - None of the vehicles are managed by the manager
+1 = All - All vehicles are managed by the manager
+2 = None_But_Respawned - Only vehicles that can respawn are managed by the manager
+3 = All_But_Respawned - All vehicles are managed by the manager with exception of respawned (opposite to mode 2)*/
+wreckManagerMode = 1;
+//Max time in seconds before a wreck will be cleaned
+wreckRemovalMaxTime = 1200;
+//Min time in seconds before a wreck will be cleaned
+wreckRemovalMinTime = 60;
+class Header
+{
+	gameType = Survive;
+	minPlayers = 1;
+	maxPlayers = 200;
+};
+class CfgRemoteExec
+{
+  // List of script functions allowed to be sent from client via remoteExec
+  class Functions
+  {
+    // RemoteExec modes:
+    // 0-turned off
+    // 1-turned on, taking whitelist into account
+    // 2-turned on, ignoring whitelist (default, because of backward compatibility)
+		#ifndef A3W_DEBUG
+		mode = 1; // 0 = block all, 1 = whitelist, 2 = allow all
+		#else
+		mode = 2; // debug mode, don't touch
+		#endif
+    // Ability to send Join In Progress messages: 0-disabled, 1-enabled (default)
+    jip = 1;
+    // your functions here
+    /*class YourFunction1
+    {
+           allowedTargets=0; // can target anyone (default)
+           jip = 0; // sending jip messages is disabled for this function (overrides settings in the Functions class)
+    };
+    class YourFunction2 { allowedTargets=1; }; // can target only clients
+    class YourFunction3 { allowedTargets=2; }; // can target only the server*/
+  };
+  // List of script commands allowed to be sent from client via remoteExec
+  class Commands
+  {
+		#ifndef A3W_DEBUG
+		mode = 1; // 0 = block all, 1 = whitelist, 2 = allow all
+		#else
+		mode = 2; // debug mode, don't touch
+		#endif
+   // your commands here
+   /*class YourCommand1
+   {
+     allowedTargets=0; // can target anyone
+     jip=0; // sending jip is turned off (overrides settings in the Commands class)
+   };*/
+  };
+};
+class CfgRemoteExecCommands
+{
+	class Functions
+	{
+		#ifndef A3W_DEBUG
+		mode = 1; // 0 = block all, 1 = whitelist, 2 = allow all
+		#else
+		mode = 2; // debug mode, don't touch
+		#endif
+
+		#include "client\CfgRemoteExec_fnc.hpp"
+	};
+	class Commands
+	{
+		#ifndef A3W_DEBUG
+		mode = 1; // 0 = block all, 1 = whitelist, 2 = allow all
+		#else
+		mode = 2; // debug mode, don't touch
+		#endif
+	};
+};
+class CfgSounds
+{
+	sounds[] =
+	{
+		beep, beep2, beep3, beep4, beep5, beep6, beep7, beep8, beep9
+	};
+	class beep
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 0.5};
+							titles[] = {};
+		};
+	class beep2
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 0.6};
+							titles[] = {};
+		};
+	class beep3
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 0.7};
+							titles[] = {};
+		};
+	class beep4
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 0.8};
+							titles[] = {};
+		};
+	class beep5
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 0.9};
+							titles[] = {};
+		};
+	class beep6
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 1.0};
+							titles[] = {};
+		};
+	class beep7
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 1.2};
+							titles[] = {};
+		};
+	class beep8
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 1.4};
+							titles[] = {};
+		};
+	class beep9
+		{
+							sound[] = {"addons\beacondetector\sound\beep.wav", db-10, 0.1};
+							titles[] = {};
+		};
+};
+
+class CfgTaskTypes
+{
+	//Used for vanilla mission/task system we might find a way to use this later
+};
+class CfgUnitInsignia //Used for custom unit insignia (similar to squad xml)
+{
+	/*class 111thID
+	{
+		displayName = "111th Infantry Division"; // Name displayed in Arsenal
+		author = "Bohemia Interactive"; // Author displayed in Arsenal
+		texture = "\a3\UI_F_Bootcamp\Data\CfgUnitInsignia\B_111thID_texture_ca.paa"; // Image path
+		textureVehicle = ""; // Does nothing currently, reserved for future use
+	};*/
+};
+class CfgVehicleTemplates //Custom Vehicle templates, we'll find a use for this later
+{
+	/*class BIS_Offroad_01_default
+	{
+		displayName = "Default";
+		author = "Bohemia Interactive";
+		textureList[] =
+		{
+			"guerilla_01", 1,
+			"guerilla_02", 1
+		};
+		animationList[] =
+		{
+			"HideBumper1", 1,
+			"HideBumper2", 1
+		};
+	};*/
+};
+
+//Dialog includes
+#include "debugFlag.hpp"
+#include "infiSTAR_AdminMenu.hpp"
+
+//Vanilla Wasteland Diologs
+#include "client\gui_base.hpp"
+// #include "addons\R3F_LOG\desc_include.h" (Need more efficient solution. Recreate from scratch?)
+#include "client\ui_toolkit.hpp"
+#include "client\common.hpp"
+#include "client\items\atm\atm_gui.hpp"
+#include "client\actions\gui.hpp"
+#include "addons\far_revive\revive_gui.hpp"
+#include "client\systems\playerMenu\dialog\player_settings.hpp"
+#include "client\systems\groups\dialog\groupManagement.hpp"
+#include "client\systems\gunStore\dialog\gunshop_settings.hpp"
+#include "client\systems\generalStore\dialog\genstore_settings.hpp"
+#include "client\systems\vehicleStore\dialog\vehiclestore_settings.hpp"
+/*#include "client\systems\adminPanel\dialog\adminMenu.hpp"
+#include "client\systems\adminPanel\dialog\modMenu.hpp"
+#include "client\systems\adminPanel\dialog\serverAdminMenu.hpp"
+#include "client\systems\adminPanel\dialog\debugMenu.hpp"
+#include "client\systems\adminPanel\dialog\playerMenu.hpp"
+#include "client\systems\adminPanel\dialog\vehicleManagement.hpp"
+#include "client\systems\adminPanel\dialog\markerLog.hpp"
+#include "client\systems\adminPanel\dialog\objectSearch.hpp"*/
+#include "client\systems\playerMenu\dialog\respawn_dialog.hpp"
+#include "client\systems\playerMenu\dialog\teamkill_dialog.hpp"
+// #include "addons\proving_ground\PG_config.hpp"
+#include "addons\outlw_magrepack\config.hpp"
+#include "addons\BoS\dialog\BoS_mainMenu.hpp"
+#include "addons\gui\gui.hpp"
+#include "addons\parking\list_simple_menu.hpp"
+#include "addons\vPin\dialog\vPin_mainMenu.hpp"
+#include "addons\AF_Keypad\AF_KP_defines.hpp"
+#include "addons\AF_Keypad\AF_KP_dialogs.hpp"
+#include "addons\taw_vd\GUI.h"
+#include "addons\MSS\Dialog\mss_master.hpp"
+
+//UI Settings
+#define A3W_UICOLOR_R  0.25 // default = 0.25
+#define A3W_UICOLOR_G  0.51 // default = 0.51
+#define A3W_UICOLOR_B  0.96 // default = 0.96
+
+class RscTitles
+{
+	#include "addons\lsd_nvg\RscTitles.hpp"
+	#include "client\systems\hud\dialog\hud.hpp" //Keep this?
+	#include "client\systems\playerMenu\dialog\welcome.hpp"
+	#include "client\systems\scoreboard\score_gui.hpp"
+	#include "addons\statusBar\statusBar.hpp" // Need to work on this to fix initialization error (low priority)
+};
+
+class CfgFunction
+{
+	#include "client\CfgFunctions.hpp"
+	#include "server\CfgFunctions.hpp"
+	#include "addons\aj\aj_FunctionsDefinition.hpp"
+};
+
+class CfgNotifications
+{
+	#include "client\CfgNotifications.hpp"
+};
